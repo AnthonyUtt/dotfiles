@@ -1,0 +1,19 @@
+################# Subject Line ###################
+# <type>[optional scope]: <description>
+# Types: build,chore,ci,docs,feat,fix,perf,refactor,revert,style,test
+# Write in the imperative: "Fix issue", not "fixes" or "fixed"
+############### 50 Character Limit ###############
+
+# Subject-Body Separator
+
+############################## Body Text ###############################
+# Rules:
+#
+# - Separate paragraphs with a blank line
+# - Use dashes (-) for bullet points
+######################### 72 Character Limit ###########################
+
+
+
+# Add issue number here
+Resolves: N/A

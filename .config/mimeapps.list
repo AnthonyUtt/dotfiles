@@ -1,0 +1,4 @@
+
+[Default Applications]
+x-scheme-handler/http=.local/share/applications/default-http-scheme-handler.desktop
+x-scheme-handler/https=.local/share/applications/default-http-scheme-handler.desktop

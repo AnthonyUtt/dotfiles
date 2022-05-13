@@ -1,0 +1,13 @@
+[credential]
+	helper = none
+[user]
+	name = AnthonyUtt
+	email = anthony@anthonyutt.dev
+[pull]
+	rebase = false
+[init]
+	defaultBranch = production
+[includeIf "gitdir:~/source/work/"]
+	path = ~/.gitconfig-work
+[commit]
+	template = /home/anthony/.gitcommitmsg

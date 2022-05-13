@@ -1,0 +1,11 @@
+# any window with the title "fzf-switcher" will be floating
+for_window [title="fzf-switcher"] floating enable
+
+bindsym $mod+Tab 	exec 	'THEME=$theme /home/anthony/.config/sway/scripts/sway-tree-switcher'
+bindsym $mod+w   	exec 	'THEME=$theme /home/anthony/.config/sway/scripts/sway-workspace-switcher'
+bindsym $mod+Shift+w	exec	'THEME=$theme /home/anthony/.config/sway/scripts/sway-window-move'
+bindsym $mod+m		exec	'THEME=$theme /home/anthony/.config/sway/scripts/sway-marks-switcher'
+bindsym $mod+Shift+m	exec	'THEME=$theme /home/anthony/.config/sway/scripts/sway-mark'
+bindsym $mod+n		exec	'/home/anthony/.config/sway/scripts/sway-new-workspace'
+bindsym $mod+Shift+n	exec	'/home/anthony/.config/sway/scripts/sway-rename'
+

@@ -1,0 +1,6 @@
+configuration {
+	theme: "/home/anthony/.config/rofi/slate.rasi";
+	modi: "window,drun,ssh,combi";
+	combi-modi: "window,drun,ssh";
+	font: "Barlow 18";
+}
