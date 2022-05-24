@@ -12,14 +12,11 @@ call plug#begin("~/.vim/plugged")
 	" File Searching
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	Plug 'junegunn/fzf.vim'
+    Plug 'wookayin/fzf-ripgrep.vim'
 
 	" Intellisense / Syntax Highlighting
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-cmake']
-
-	" TypeScript / TSX Support
-	Plug 'leafgarland/typescript-vim'
-	Plug 'peitalin/vim-jsx-typescript'
+	let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-cmake', 'coc-pyright', 'coc-solargraph']
 
 	" Misc
 	Plug 'preservim/nerdcommenter'
@@ -31,14 +28,23 @@ call plug#begin("~/.vim/plugged")
     Plug 'steelsojka/pears.nvim'
     Plug 'tyru/open-browser.vim'
     Plug 'liuchengxu/vista.vim'
+    Plug 'farmergreg/vim-lastplace'
+    Plug 'tpope/vim-fugitive'
+
+    " React/JS/TS Support
+    Plug 'pangloss/vim-javascript'
+    Plug 'leafgarland/typescript-vim'
+    Plug 'peitalin/vim-jsx-typescript'
 
     " Ruby
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'vinibispo/ruby.nvim'
-    
+    Plug 'tpope/vim-rails'
+
     " C++
     Plug 'bfrg/vim-cpp-modern'
+    Plug 'jackguo380/vim-lsp-cxx-highlight'
 call plug#end()
 
 " Config section
@@ -64,7 +70,7 @@ set clipboard=unnamedplus   " using system clipboard
 filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
-" set spell                 " enable spell check (may need to download language package)
+set spell                 " enable spell check (may need to download language package)
 " set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
 set ruler                   " enable line and column display
@@ -75,6 +81,9 @@ set hidden
 set confirm
 set autowriteall
 set wildmenu wildmode=full
+
+" Set encoding for vim-devicons
+set encoding=UTF-8
 
 " Give more space for displaying messages.
 set cmdheight=2
@@ -119,7 +128,14 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endi
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Toggle NERDTree
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+nnoremap <silent> <C-b> :call NERDTreeToggleAndRefresh()<CR>
+
+function NERDTreeToggleAndRefresh()
+    :NERDTreeToggle
+    if g:NERDTree.IsOpen()
+        :NERDTreeRefreshRoot
+    endif
+endfunction
 
 " Integrated Terminal
 set splitright
@@ -201,6 +217,7 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 
 " File Searching
 nnoremap <C-p> :FZF<CR>
+nnoremap <C-f> :RgFzf<CR>
 let g:fzf_action = {
 	\ 'ctrl-t': 'tab split',
 	\ 'ctrl-s': 'split',
@@ -226,3 +243,29 @@ nnoremap <silent> <A-G> :Vista!!<CR>
 
 " Enable nvim-blame-line
 autocmd BufEnter * EnableBlameLine
+
+" C++ Syntax Highlighting
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+
+" Ruby / Rails Settings
+autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
+
+" React stuff
+" Enable code folding
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
+
+" Set file types for vim-jsx-typescript
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+
+" Lua-based plugin setup
+" nvim-scrollbar
+lua require("scrollbar").setup()
+
+" pears.nvim
+lua require("pears").setup()
