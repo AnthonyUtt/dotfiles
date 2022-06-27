@@ -8,6 +8,9 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Enable vi-style bindings in ZSH
+bindkey -v
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/anthony/.oh-my-zsh"
 
@@ -75,7 +78,11 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(dotenv git vscode zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search)
+plugins=(vi-mode dotenv git vscode zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search)
+
+# vi-mode settings
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -140,25 +147,49 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 # Path Additions
-export PATH="/snap/bin:$HOME/.rbenv/bin:$PATH"
+#export PATH="/snap/bin:$HOME/.rbenv/bin:$PATH"
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 
 # Java
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
+#export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
 
 # Android Studio + RN setup
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+#export ANDROID_HOME=$HOME/Android/Sdk
+#export PATH=$PATH:$ANDROID_HOME/emulator
+#export PATH=$PATH:$ANDROID_HOME/tools
+#export PATH=$PATH:$ANDROID_HOME/tools/bin
+#export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Rbenv init
-eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
+
+# Go Path Addition
+export PATH=$PATH:/usr/local/go/bin
+
+# Rust
+source $HOME/.cargo/env
 
 # Aliases
 alias opo-check="(){ curl -X POST -F 'target="$1"' https://naughty-knuth-c2f221.netlify.app/.netlify/functions/seo-data ;}"
-alias server-connect="ssh -i $HOME/.ssh/work_id_rsa work@34.73.69.180"
+#alias server-connect="ssh -i $HOME/.ssh/work_id_rsa work@34.73.69.180"
 alias package-cleanup="sudo apt autoremove"
-alias colorpicker="$HOME/source/apps/colorpicker/colorpicker --short --one-shot --preview | xsel -b"
+#alias colorpicker="$HOME/source/apps/colorpicker/colorpicker --short --one-shot --preview | xsel -b"
+alias log-out="i3-msg exit"
+alias dc="docker-compose"
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
+alias start-osx='docker run -it --device /dev/kvm -e "DISPLAY=${DISPLAY:-:0.0}" -v /tmp/.X11-unix:/tmp/.X11-unix -p 50922:10022 -e NOPICKER=true -e GENERATE_SPECIFIC=true -e DEVICE_MODEL="iMacPro1,1" -e SERIAL="C02Y20MDHX87" -e BOARD_SERIAL="C029014014NJG368C" -e UUID="95026928-D09C-43AB-AD8D-FD4728AF9B11" -e MAC_ADDRESS="50:F4:EB:DE:FC:B1" -v "/home/anthony/.docker-osx/mac_hdd_ng.img:/image" sickcodes/docker-osx:naked'
+alias amptest='docker container exec amplify_app_1 bundle exec rspec'
+alias twitch='$HOME/.stream-setup'
+alias unlock-passport='(){ sudo wdpassport-utils.py --device $1 --unlock ;}'
+alias mount-passport='(){ sudo mount $1 ~/media ;}'
+alias arg-test='(){ echo $1 ;}'
+alias transcode='(){ ffmpeg -i $1 -c:v dnxhd -profile:v dnxhr_sq -pix_fmt yuv422p -c:a pcm_s16le -f mov $2 ;}'
+alias cat='batcat'
+alias ls='exa'
+alias ll='exa -al'
+alias top='btop'
+alias mux='tmuxinator'
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

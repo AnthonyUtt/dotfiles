@@ -4,6 +4,9 @@ call plug#begin("~/.vim/plugged")
 	" Theme
 	Plug 'dracula/vim'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+
+    " Tmux+Vim
+    Plug 'christoomey/vim-tmux-navigator'
 	
 	" File Explorer
 	Plug 'scrooloose/nerdtree'
@@ -45,6 +48,9 @@ call plug#begin("~/.vim/plugged")
     " C++
     Plug 'bfrg/vim-cpp-modern'
     Plug 'jackguo380/vim-lsp-cxx-highlight'
+
+    " Godot
+    Plug 'habamax/vim-godot'
 call plug#end()
 
 " Config section
@@ -105,11 +111,12 @@ else
 endif
 
 " Theme
-if (has("termguicolors"))
-	set termguicolors
-endif
+set notermguicolors
 syntax enable
 colorscheme tokyonight
+
+" Tmux+Vim
+let g:tmux_navigator_no_mappings = 1
 
 " File Explorer
 let g:NERDTreeShowHidden = 1
@@ -206,10 +213,10 @@ tnoremap <A-h> <C-\><C-n><C-w>h
 tnoremap <A-j> <C-\><C-n><C-w>j
 tnoremap <A-k> <C-\><C-n><C-w>k
 tnoremap <A-l> <C-\><C-n><C-w>l
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 " move line or visually selected block - alt+j/k
 inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -262,6 +269,9 @@ augroup END
 
 " Set file types for vim-jsx-typescript
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+
+" Godot Settings
+let g:godot_executable = '/home/anthony/.godot'
 
 " Lua-based plugin setup
 " nvim-scrollbar
