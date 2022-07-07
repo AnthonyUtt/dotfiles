@@ -11,11 +11,6 @@
 
 set $mod Mod4
 
-# Monitor variables
-set $left DP-2
-set $center DP-4
-set $right DP-0
-
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:monospace 8
@@ -37,27 +32,35 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # Use pactl to adjust volume in PulseAudio.
 #set $refresh_i3status killall -SIGUSR1 i3status
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 #bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Use playerctl to control media
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+
+# Use flameshot for taking screenshots
+bindsym Print exec --no-startup-id flameshot gui
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec urxvt -name float_term
+bindsym $mod+Return exec --no-startup-id alacritty --class=float_term
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec --no-startup-id rofi -show drun
+bindsym $mod+space exec --no-startup-id albert show
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec rofi -modi drun,run -show drun
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -94,7 +97,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+# bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -111,7 +114,7 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
+set $ws1 "main"
 set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
@@ -121,11 +124,6 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
-# Default monitors for workspace 1-3
-workspace $ws1 output $left
-workspace $ws2 output $center
-workspace $ws3 output $right
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -150,6 +148,15 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# i3-fzfify: Keybinds for scripts
+bindsym $mod+w exec --no-startup-id $HOME/.config/i3/i3-workspace-switcher
+bindsym $mod+m exec --no-startup-id $HOME/.config/i3/i3-mark
+bindsym $mod+Shift+m exec --no-startup-id $HOME/.config/i3/i3-marks-switcher
+bindsym $mod+tab exec --no-startup-id $HOME/.config/i3/i3-tree-switcher
+bindsym $mod+Shift+w exec --no-startup-id $HOME/.config/i3/i3-window-move
+bindsym $mod+n exec --no-startup-id $HOME/.config/i3/i3-new-workspace
+bindsym $mod+Shift+n exec --no-startup-id $HOME/.config/i3/i3-rename
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -185,8 +192,26 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Layout keybinds for scaling windows horizontally
+mode "layout" {
+        # Each keybind here sets the width of the pane
+        # to 1/n, where n is the number pressed
+        bindsym 1 resize set width 100 ppt
+        bindsym 2 resize set width 50 ppt
+        bindsym 3 resize set width 33 ppt
+        bindsym 4 resize set width 25 ppt
+        bindsym 5 resize set width 20 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+Shift+a mode "layout"
+
 # Window-specific settings
-for_window [class="URxvt" instance="float_term"] floating enable 
+for_window [class="Alacritty" instance="float_term"] floating enable 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -199,6 +224,16 @@ for_window [class="slack"] floating enable
 for_window [class="^Live News"] floating enable
 for_window [class="bitwarden"] floating enable
 
+# i3-fzfify: Using multiple window titles for polybar title display
+for_window [title="Set Window Mark"] floating enable
+for_window [title="Switch to Mark"] floating enable
+for_window [title="New Workspace"] floating enable
+for_window [title="Rename Workspace"] floating enable
+for_window [title="Tree Switcher"] floating enable
+for_window [title="Move Window to Workspace"] floating enable
+for_window [title="Move Workspace"] floating enable
+for_window [title="Switch Workspace"] floating enable
+
 # Default window style
 default_border none
 default_floating_border none
@@ -207,13 +242,28 @@ default_floating_border none
 exec --no-startup-id $HOME/.config/i3/startup.sh
 
 # Start picom
-exec_always --no-startup-id picom
+exec_always --no-startup-id picom --experimental-backend
 
 # Launch Polybar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh --cuts
+
+# Launch Albert
+exec --no-startup-id albert
+
+# Launch Flameshot
+exec --no-startup-id flameshot
+
+# Launch deadd-notification-center
+exec_always --no-startup-id deadd-notification-center
 
 # Launch Naga_KeypadMapper
-exec_always --no-startup-id $HOME/.config/naga/nagastart.sh
+#exec_always --no-startup-id $HOME/.config/naga/nagastart.sh
+
+# Set main workspace layout
+exec --no-startup-id "i3-msg 'workspace main; append_layout /home/anthony/.config/i3/workspace-main.json'"
+
+# Call dex for app autostart
+exec --no-startup-id dex -a
 
 # i3-gaps setup
 gaps inner 30

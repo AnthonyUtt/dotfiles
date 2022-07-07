@@ -1,23 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 
-# Terminate already running bar instances
-killall -q polybar
+dir="$HOME/.config/polybar"
 
-# Wait until the processes have been shut down
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+launch_bar() {
+    # Terminate already running bar instances
+    killall -q polybar
 
-# Launch Polybar using default config location ~/.config/polybar/config
-# if type "xrandr"; then
-# 	for m in $(xrandr --query | grep "connected" | cut -d" " -f1); do
-# 		MONITOR=$m polybar --reload example &
-# 	done
-# else
-# 	polybar --reload example &
-# fi
-polybar --reload wm &
-polybar --reload spotify &
-polybar --reload date &
-polybar --reload system &
+    # Wait until the processes have been shut down
+    while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
-echo "Polybar launched"
+    # Launch that shit
+    polybar -q transparent -c "$dir/config.ini" &
+    polybar -q wm -c "$dir/config.ini" &
+    polybar -q sys -c "$dir/config.ini" &
+}
 
+launch_bar

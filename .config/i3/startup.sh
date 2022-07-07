@@ -1,6 +1,6 @@
 #!/bin/bash
 
-feh --bg-scale --no-xinerama $HOME/Downloads/bg.png
-ip link set enp6s0 up
+feh --bg-scale $HOME/.bg.jpeg
+ip link set enp7s0 up
 systemctl restart dhcpcd
 

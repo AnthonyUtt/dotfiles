@@ -29,10 +29,11 @@ call plug#begin("~/.vim/plugged")
     Plug 'tveskag/nvim-blame-line'
     Plug 'petertriho/nvim-scrollbar'
     Plug 'steelsojka/pears.nvim'
-    Plug 'tyru/open-browser.vim'
     Plug 'liuchengxu/vista.vim'
     Plug 'farmergreg/vim-lastplace'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-surround'
+    Plug 'alvan/vim-closetag'
 
     " React/JS/TS Support
     Plug 'pangloss/vim-javascript'
@@ -114,6 +115,22 @@ endif
 set notermguicolors
 syntax enable
 colorscheme tokyonight
+hi Normal guibg=NONE ctermbg=NONE
+hi NormalNC guibg=NONE ctermbg=NONE
+
+" Fixes lag when exiting insert/visual mode
+if !has('gui_running')
+    set ttimeoutlen=10
+    augroup FastEscape
+        autocmd!
+        autocmd InsertEnter * set timeoutlen=0
+        autocmd InsertLeave * set timeoutlen=1000
+    augroup end
+endif
+
+" NerdComment
+let g:NERDSpaceDelims = 1       " add space after comment
+let g:NERDCompactSexyComs = 1   " short syntax in comment blocks
 
 " Tmux+Vim
 let g:tmux_navigator_no_mappings = 1
@@ -246,7 +263,7 @@ command! JbzCppMan :call s:JbzCppMan()
 au FileType cpp nnoremap <buffer>K :JbzCppMan<CR>
 
 " Vista toggle
-nnoremap <silent> <A-G> :Vista!!<CR>
+"nnoremap <silent> <A-G> :Vista!!<CR>
 
 " Enable nvim-blame-line
 autocmd BufEnter * EnableBlameLine
@@ -272,6 +289,18 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
 " Godot Settings
 let g:godot_executable = '/home/anthony/.godot'
+
+" vim-closetag
+let g:closetag_filenames = '*.html,*.html.erb,*.xhtml,*.phtml'
+let g:closetag_xhtml_filenames = '*.xhtml, *.js, *.jsx, *.tsx'
+let g:closetag_filetypes = 'html,erb,xhtml,phtml'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx,js,tsx'
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
 
 " Lua-based plugin setup
 " nvim-scrollbar

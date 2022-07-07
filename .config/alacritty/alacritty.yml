@@ -61,7 +61,10 @@ schemes:
 colors: *tokyo-night-storm
 
 window:
-  opacity: 0.95
+  opacity: 0.75
+  dimensions:
+    columns: 136
+    lines: 40
 
 font:
   normal:
