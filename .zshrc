@@ -120,9 +120,7 @@ bindkey '^[OB' history-substring-search-down
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Add NVM functionality
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # this loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # this loads bash_completion
+source /usr/share/nvm/init-nvm.sh
 
 # Auto-load node version from .nvmrc files
 autoload -U add-zsh-hook
@@ -160,6 +158,9 @@ export PATH="$(python3 -m site --user-base)/bin:$PATH"
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
 #export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+# Gems
+export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
+
 # Rbenv init
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
@@ -168,7 +169,14 @@ eval "$(rbenv init - zsh)"
 export PATH=$PATH:/usr/local/go/bin
 
 # Rust
-source $HOME/.cargo/env
+#source $HOME/.cargo/env
+
+# Nix
+export PATH="$HOME/.nix-profile/bin:$PATH"
+
+# Editor env assignments
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Aliases
 alias opo-check="(){ curl -X POST -F 'target="$1"' https://naughty-knuth-c2f221.netlify.app/.netlify/functions/seo-data ;}"
@@ -180,16 +188,19 @@ alias dc="docker-compose"
 alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
 alias start-osx='docker run -it --device /dev/kvm -e "DISPLAY=${DISPLAY:-:0.0}" -v /tmp/.X11-unix:/tmp/.X11-unix -p 50922:10022 -e NOPICKER=true -e GENERATE_SPECIFIC=true -e DEVICE_MODEL="iMacPro1,1" -e SERIAL="C02Y20MDHX87" -e BOARD_SERIAL="C029014014NJG368C" -e UUID="95026928-D09C-43AB-AD8D-FD4728AF9B11" -e MAC_ADDRESS="50:F4:EB:DE:FC:B1" -v "/home/anthony/.docker-osx/mac_hdd_ng.img:/image" sickcodes/docker-osx:naked'
-alias amptest='docker container exec amplify_app_1 bundle exec rspec'
+alias amptest='docker container exec amplify-app-1 bundle exec rspec'
 alias twitch='$HOME/.stream-setup'
 alias unlock-passport='(){ sudo wdpassport-utils.py --device $1 --unlock ;}'
 alias mount-passport='(){ sudo mount $1 ~/media ;}'
 alias arg-test='(){ echo $1 ;}'
 alias transcode='(){ ffmpeg -i $1 -c:v dnxhd -profile:v dnxhr_sq -pix_fmt yuv422p -c:a pcm_s16le -f mov $2 ;}'
-alias cat='batcat'
+alias cat='bat'
 alias ls='exa'
 alias ll='exa -al'
 alias top='btop'
 alias mux='tmuxinator'
+
+# i3 layouts
+alias start-main="/home/anthony/.i3/scripts/work-layout main"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
