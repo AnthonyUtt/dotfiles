@@ -223,6 +223,7 @@ for_window [class="zoom" title="^Zoom Cloud Meetings"] floating enable
 for_window [class="slack"] floating enable
 for_window [class="^Live News"] floating enable
 for_window [class="bitwarden"] floating enable
+for_window [class="alkahest" instance="alkahest"] floating enable
 
 # i3-fzfify: Using multiple window titles for polybar title display
 for_window [title="Set Window Mark"] floating enable
@@ -266,7 +267,7 @@ exec --no-startup-id "i3-msg 'workspace main; append_layout /home/anthony/.confi
 exec --no-startup-id dex -a
 
 # i3-gaps setup
-gaps inner 30
+gaps inner 15
 gaps outer 0
 smart_gaps on
 

@@ -4,6 +4,7 @@ call plug#begin("~/.vim/plugged")
 	" Theme
 	Plug 'dracula/vim'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    Plug 'ellisonleao/gruvbox.nvim'
 
     " Tmux+Vim
     Plug 'christoomey/vim-tmux-navigator'
@@ -11,6 +12,7 @@ call plug#begin("~/.vim/plugged")
 	" File Explorer
 	Plug 'scrooloose/nerdtree'
 	Plug 'ryanoasis/vim-devicons'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
 
 	" File Searching
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -34,6 +36,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'alvan/vim-closetag'
+    Plug 'lambdalisue/suda.vim'
 
     " React/JS/TS Support
     Plug 'pangloss/vim-javascript'
@@ -102,6 +105,9 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
+" Set shell to ZSH
+set shell=zsh
+
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
@@ -114,7 +120,8 @@ endif
 " Theme
 set notermguicolors
 syntax enable
-colorscheme tokyonight
+set background=dark
+colorscheme gruvbox
 hi Normal guibg=NONE ctermbg=NONE
 hi NormalNC guibg=NONE ctermbg=NONE
 
@@ -160,6 +167,9 @@ function NERDTreeToggleAndRefresh()
         :NERDTreeRefreshRoot
     endif
 endfunction
+
+" Set NERDTreeGit nerd fonts
+let g:NERDTreeGitStatusUseNerdFonts = 1
 
 " Integrated Terminal
 set splitright
@@ -263,7 +273,7 @@ command! JbzCppMan :call s:JbzCppMan()
 au FileType cpp nnoremap <buffer>K :JbzCppMan<CR>
 
 " Vista toggle
-"nnoremap <silent> <A-G> :Vista!!<CR>
+nnoremap <silent> <A-G> :Vista!!<CR>
 
 " Enable nvim-blame-line
 autocmd BufEnter * EnableBlameLine
