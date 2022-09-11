@@ -10,9 +10,7 @@ launch_bar() {
     while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
     # Launch that shit
-    polybar -q transparent -c "$dir/config.ini" &
-    polybar -q wm -c "$dir/config.ini" &
-    polybar -q sys -c "$dir/config.ini" &
+    polybar -q main -c "$dir/config.ini" &
 }
 
 launch_bar
