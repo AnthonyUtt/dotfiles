@@ -1,7 +1,7 @@
 # /home/anthony/.config/tmuxinator/alkahest.yml
 
 name: alkahest
-root: ~/source/alkahest/
+root: ~/source/rs/alkahest/
 
 # Optional tmux socket
 # socket_name: foo
@@ -51,3 +51,7 @@ windows:
         - nvim
         - zsh:
           - 
+  - console:
+    panes:
+      - zsh:
+        - 

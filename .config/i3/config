@@ -224,6 +224,7 @@ for_window [class="slack"] floating enable
 for_window [class="^Live News"] floating enable
 for_window [class="bitwarden"] floating enable
 for_window [class="alkahest" instance="alkahest"] floating enable
+for_window [class="DBeaver"] floating enable
 
 # i3-fzfify: Using multiple window titles for polybar title display
 for_window [title="Set Window Mark"] floating enable
@@ -235,6 +236,9 @@ for_window [title="Move Window to Workspace"] floating enable
 for_window [title="Move Workspace"] floating enable
 for_window [title="Switch Workspace"] floating enable
 
+# Remove border/title for all windows
+for_window [all] border none
+
 # Default window style
 default_border none
 default_floating_border none
@@ -245,8 +249,8 @@ exec --no-startup-id $HOME/.config/i3/startup.sh
 # Start picom
 exec_always --no-startup-id picom --experimental-backend
 
-# Launch Polybar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh --cuts
+# Launch EWW bar
+exec --no-startup-id $HOME/.config/eww/launch_bar open
 
 # Launch Albert
 exec --no-startup-id albert

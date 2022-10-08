@@ -1,0 +1,152 @@
+/*
+ * Variables
+ */
+
+$color-transparent: rgba(0,0,0,0);
+$color-foreground: rgba(#DFBF8E, 0.8);
+$color-background: rgba(#282828, 0.3);
+$color-background-opaque: #282828;
+$color-background-lighter: #666;
+
+$color-black: rgba(#665C54, 0.8);
+$color-red: rgba(#EA6962, 0.8);
+$color-green: rgba(#A9B665, 0.8);
+$color-yellow: rgba(#E78A4E, 0.8);
+$color-blue: rgba(#7DAEA3, 0.8);
+$color-magenta: rgba(#D3869B, 0.8);
+$color-cyan: rgba(#89B482, 0.8);
+$color-white: rgba(#DFBF8E, 0.8);
+
+/*
+ * Basic Styles
+ */
+
+* { all: unset; }
+
+.layout-box {
+    font-family: Phosphor, Koulen;
+    background-color: $color-background;
+    padding: 5em;
+    color: $color-foreground;
+    border: 1px solid red;
+}
+
+.time-label {
+    font-size: 2em;
+}
+
+.separator {
+    font-size: 1em;
+    padding: 0.15em 0.2em 0;
+    font-family: Iosevka;
+    font-weight: 400;
+}
+
+.close-btn {
+    font-size: 2em;
+    &:hover {
+        color: $color-red;
+    }
+}
+
+.panel {
+    background-color: $color-background-opaque;
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid $color-background-lighter;
+}
+
+.outline {
+    border: 1px solid red;
+}
+
+.dashboard__main {
+    font-family: Koulen;
+
+    .face {
+        background-size: 200px;
+        margin: 2rem 0;
+        min-width: 200px;
+        min-height: 200px;
+        border-radius: 100%;
+    }
+    .fullname {
+        font-size: 30px;
+    }
+    .username {
+        color: $color-magenta;
+        font-family: MesloLGS NF;
+        font-size: 22px;
+    }
+    .cpu_icon, .mem_icon, .disk_icon, .rand2_icon {
+        font-size: 32px;
+        font-weight: normal;
+        font-family: Iosevka;
+    }
+    .cpu_bar, .mem_bar, .disk_bar, .rand2_bar, scale trough {
+        all: unset;
+        background-color: #3A404C;
+        border-radius: 16px;
+        min-height: 28px;
+        min-width: 180px;
+    }
+
+    .cpu_bar, .mem_bar, .disk_bar, .rand2_bar, scale trough highlight {
+        all: unset;
+        border-radius: 16px;
+    }
+
+    .cpu_bar scale trough highlight {
+        background-color: $color-red;
+    }
+
+    .mem_bar scale trough highlight {
+        background-color: $color-green;
+    }
+
+    .disk_bar scale trough highlight {
+        background-color: $color-cyan;
+    }
+
+    .rand2_bar scale trough highlight {
+        background-color: $color-yellow;
+    }
+
+    .weather_icon {
+        font-family: Iosevka;
+        font-size: 100px;
+    }
+
+    .weather_temp {
+        font-size: 60px;
+    }
+
+    .weather_stat {
+        color: $color-yellow;
+        font-size: 30px;
+    }
+
+    .weather_quote {
+        font-size: 14px;
+    }
+}
+
+.btn-box {
+    font-size: 2.5em;
+
+    button {
+        padding: 0.4em;
+        border-radius: 0.1em;
+        background-color: $color-transparent;
+
+        &:hover {
+            color: $color-background;
+            background-color: $color-foreground;
+        }
+
+        &:last-child {
+            color: $color-red;
+        }
+    }
+
+}

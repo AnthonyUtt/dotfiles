@@ -1,0 +1,249 @@
+// Colors
+
+$color-foreground: #DFBF8E;
+$color-background: #282828;
+
+$color-black: #665C54;
+$color-red: #EA6962;
+$color-green: #A9B665;
+$color-yellow: #E78A4E;
+$color-blue: #7DAEA3;
+$color-magenta: #D3869B;
+$color-cyan: #89B482;
+$color-white: #DFBF8E;
+
+// Reset
+
+* {
+    all: unset;
+}
+
+scale trough {
+    all: unset;
+    background-color: $color-foreground;
+    border-radius: 5px;
+    min-height: 80px;
+    min-width: 10px;
+
+    highlight {
+        border-radius: 5px;
+    }
+}
+
+// Base Styles
+.bar__container {
+    padding: 1em;
+}
+
+.bar__main {
+    font-family: Koulen;
+    font-size: 1rem;
+    color: $color-foreground;
+    background-color: $color-background;
+    border-radius: 8px;
+}
+
+.launcher {
+    margin: 0.5rem;
+    .icon-launcher {
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: 150ms linear background-color;
+        
+        &:hover {
+            background-color: $color-blue;
+        }
+    }
+}
+
+.workspaces {
+    margin: 0 0.5rem;
+    padding: 0.5rem 0;
+    border-radius: 8px;
+
+    .btn-workspace {
+        &.focused {
+            color: $color-cyan;
+        }
+
+        &.urgent {
+            background-color: $color-red;
+        }
+    }
+
+    &.active {
+        border: 1px solid $color-cyan;
+    }
+}
+
+.clock {
+    margin: 0 0.5rem 1rem;
+    border-radius: 8px;
+
+    .icon-clock {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    &.active {
+        border: 1px solid $color-cyan;
+
+        .icon-clock {
+            color: $color-background;
+            background-color: $color-cyan;
+        }
+    }
+
+    &.time {
+        .hour, .minute {
+            font-size: 2rem;
+        }
+    }
+
+    &.date {
+        .month {
+            font-size: 1.5rem;
+        }
+
+        .day {
+            font-size: 2rem;
+        }
+        
+        .year {
+            font-size: 1rem;
+        }
+    }
+}
+
+.network {
+    margin: 0 0.5rem 1rem;
+    border-radius: 8px;
+
+    .icon-network {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    &.active {
+        border: 1px solid $color-magenta;
+        .icon-network {
+            color: $color-background;
+            background-color: $color-magenta;
+        }
+    }
+
+    .network-stats {
+        padding: 0.2rem;
+
+        .icon-stats__down, .icon-stats__up {
+            font-size: 1.25rem;
+        }
+
+        .stats__down, .stats__up {
+            font-family: sans-serif;
+            font-size: 0.6rem;
+        }
+    }
+}
+
+.volume {
+    margin: 0 0.5rem 1rem;
+    border-radius: 8px;
+
+    .icon-volume {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    &.active {
+        border: 1px solid $color-green;
+        .icon-volume {
+            color: $color-background;
+            background-color: $color-green;
+            transition: 100ms linear color;
+
+            &:hover {
+                color: $color-foreground;
+            }
+        }
+    }
+
+    .volume__bar {
+        margin: 0.5rem 0;
+    }
+}
+
+.power {
+    margin: 0 0.5rem 1rem;
+    border-radius: 8px;
+
+    .btn-shutdown {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        padding: 0.5rem 0;
+    }
+
+    &.active {
+        border: 1px solid $color-red;
+        .btn-shutdown {
+            color: $color-background;
+            background-color: $color-red;
+            transition: 100ms linear color;
+
+            &:hover {
+                color: $color-foreground;
+            }
+        }
+    }
+
+    .btn-reboot, .btn-logout {
+        padding: 0.5rem 0;
+        transition: 100ms linear color;
+
+        &:hover {
+            color: $color-red;
+        }
+    }
+}
+
+// Icon Font & Sizing
+.icon-launcher,
+.icon-clock,
+.icon-network,
+.icon-volume {
+    font-family: Iosevka;
+    font-size: 1.5rem;
+}
+
+.btn-workspace {
+    font-family: Iosevka;
+    font-size: 1.25rem;
+}
+
+.btn-shutdown, .btn-reboot, .btn-logout {
+    font-family: Phosphor;
+    font-size: 1.5rem;
+}
+
+// Bars
+.volume__bar {
+    scale trough highlight {
+        transition: 150ms linear background-color;
+    }
+
+    &.green {
+        scale trough highlight {
+            background-color: $color-green;
+        }
+    }
+    &.yellow {
+        scale trough highlight {
+            background-color: $color-yellow;
+        }
+    }
+    &.red {
+        scale trough highlight {
+            background-color: $color-red;
+        }
+    }
+}

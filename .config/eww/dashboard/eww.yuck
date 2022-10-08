@@ -1,0 +1,159 @@
+;; Window Definitions
+
+(defwindow dashboard
+  :stacking 'fg'
+  :windowtype 'normal'
+  :wm-ignore true
+  :geometry (geometry :width '100%' :height '100%')
+  (dashboard_layout))
+
+;; Variable Definitions =======================================================
+
+;; Profile
+(defvar NAME "Anthony Utt")
+(defvar UNAME "@AnthonyUtt")
+(defvar IMAGE "images/profile.jpg")
+
+;; System
+(defvar HOST "arch-pc")
+(defpoll CPU_USAGE :interval '1s' `scripts/sys.sh --cpu`)
+(defpoll MEM_USAGE :interval '1s' `scripts/sys.sh --mem`)
+(defpoll DISK_USAGE :interval '1s' `scripts/sys.sh --disk`)
+
+;; Date & Time
+(defpoll datetime :interval '1s'
+ :initial `date +'%A, %d %b %Y - %H:%M:%S'`
+ `date +'%A, %d %b %Y - %H:%M:%S'`)
+
+(defpoll time :interval '5s'
+ :initial `date +'%H:%M'`
+ `date +'%H:%M'`)
+
+;; Uptime
+(defpoll UPTIME :interval '5s' `uptime -p`)
+
+;; Weather
+(defpoll ICON :interval '15m' `scripts/weather.sh --icon`)
+(defpoll STAT :interval '15m' `scripts/weather.sh --stat`)
+(defpoll TEMP :interval '15m' `scripts/weather.sh --temp`)
+(defpoll HEX :interval '15m' `scripts/weather.sh --hex`)
+(defpoll QUOTE :interval '15m' `scripts/weather.sh --quote`)
+(defpoll QUOTE2 :interval '15m' `scripts/weather.sh --quote2`)
+
+;; Layout Definitions
+
+(defwidget dashboard_layout []
+ (box :class 'layout-box' :space-evenly false :orientation 'v'
+  (box :valign 'start' :halign 'end' :hexpand true :space-evenly false :spacing 25
+   (label :text "${datetime}" :class 'time-label')
+   (label :text '|' :class 'separator')
+   (button :onclick 'scripts/dashboard close' :class 'close-btn' '')
+  )
+  (box :space-evenly false :vexpand true :hexpand true :orientation 'v'
+   (_dashboard)
+   (_power_buttons :shutdown "poweroff" :reboot "systemctl reboot" :logout "loginctl kill-session self"
+             :shutdown_icon "" :reboot_icon "" :logout_icon ""
+   )
+  )
+ )
+)
+
+;; Widget Definitions
+
+(defwidget _dashboard []
+ (box :class 'dashboard__container' :space-evenly false :vexpand true :hexpand true
+  (box :class 'dashboard__main' :space-evenly false :spacing 25 :vexpand true :hexpand true :halign 'center'
+   (box :class 'dashboard__left' :height 700 :spacing 25 :space-evenly false :orientation 'v' :valign 'center' :halign 'center'
+    (_profile)
+    (_system)
+   )
+   (box :class 'dashboard__center ' :height 700 :space-evenly false :orientation 'v' :valign 'center' :halign 'center'
+    (box :class '' :height 700 :width 845 :spacing 25 :space-evenly false :orientation 'v'
+     (box :class 'row ' :height 265 :width 845 :spacing 25 :space-evenly false :orientation 'h'
+      (box :class '' :height 265 :width 265 :spacing 25 :orientation 'v'
+       (box :class 'panel' :height 120 :width 265)
+       (box :class 'panel' :height 120 :width 265)
+      )
+      (_weather)
+     )
+     (box :class 'row ' :height 265 :width 845 :spacing 25 :space-evenly false :orientation 'h'
+      (box :class 'panel' :height 165 :width 555)
+      (box :class 'panel' :height 165 :width 265)
+     )
+     (box :class 'row ' :height 120 :width 845 :spacing 25 :space-evenly false :orientation 'h'
+      (box :class 'panel' :height 120 :width 120)
+      (box :class 'panel' :height 120 :width 120)
+      (box :class 'panel' :height 120 :width 120)
+      (box :class 'panel' :height 120 :width 120)
+      (box :class 'panel' :height 120 :width 265)
+     )
+    )
+   )
+   (box :class 'dashboard__right ' :height 700 :spacing 25 :space-evenly false :orientation 'v' :valign 'center' :halign 'center'
+    (box :class 'buttons ' :width 265 :height 265 :spacing 25 :space-evenly false :orientation 'v'
+     (box :class 'button_row ' :width 265 :height 120 :spacing 25
+      (box :class 'button panel' :width 120 :height 120)
+      (box :class 'button panel' :width 120 :height 120)
+     )
+     (box :class 'button_row ' :width 265 :height 120 :spacing 25
+      (box :class 'button panel' :width 120 :height 120)
+      (box :class 'button panel' :width 120 :height 120)
+     )
+    )
+    (box :class 'files panel' :width 265 :height 410)
+   )
+  )
+ )
+)
+
+(defwidget _power_buttons [shutdown shutdown_icon reboot reboot_icon logout logout_icon]
+ (box :class 'btn-box' :spacing 5 :vexpand false :hexpand true :valign 'end' :halign 'end' :space-evenly false
+  (button :onclick logout logout_icon)
+  (button :onclick reboot reboot_icon)
+  (button :onclick shutdown shutdown_icon)
+ )
+)
+
+(defwidget _profile []
+ (box :class 'panel profile' :width 265 :height 375 :orientation 'v' :space-evenly false :vexpand true :hexpand true :valign 'center' :halign 'center'
+  (box :style 'background-image: url("${IMAGE}");' :class 'face' :halign 'center')
+  (label :class 'fullname' :halign 'center' :text NAME)
+  (label :class 'username' :halign 'center' :text UNAME)
+ )
+)
+
+(defwidget _system []
+ (box :class 'panel system' :width 265 :height 300 :orientation 'v' :halign 'center' :valign 'start' :space-evenly true :vexpand true :hexpand false
+   (box :class 'cpu_bar' :orientation 'h' :spacing 20 :space-evenly false :vexpand false :hexpand true
+    (label :class 'cpu_icon' :text "" :hexpand true)
+    (scale :min 0 :max 100 :value {CPU_USAGE < 10 ? 10 : CPU_USAGE} :active false :halign 'end')
+   )
+   (box :class 'mem_bar' :orientation 'h' :spacing 20 :space-evenly false :vexpand false :hexpand true
+    (label :class 'mem_icon' :text "" :hexpand true)
+    (scale :min 0 :max 100 :value MEM_USAGE :active false :halign 'end')
+   )
+   (box :class 'disk_bar' :orientation 'h' :spacing 20 :space-evenly false :vexpand false :hexpand true
+    (label :class 'disk_icon' :text "" :hexpand true)
+    (scale :min 0 :max 100 :value {DISK_USAGE} :active false :halign 'end')
+   )
+   (box :class 'rand2_bar' :orientation 'h' :spacing 20 :space-evenly false :vexpand false :hexpand true
+    (label :class 'rand2_icon' :text "" :hexpand true)
+    (scale :min 0 :max 100 :value {MEM_USAGE + 7} :active false :halign 'end')
+   )
+ )
+)
+
+(defwidget _weather []
+ (box :class 'panel weather' :height 265 :width 555 :orientation 'v' :space-evenly false :vexpand false :hexpand false
+  (box :orientation 'h' :vexpand false :hexpand true
+   (label :class 'weather_icon' :halign 'center' :style 'color: ${HEX};' :text ICON)
+   (label :class 'weather_temp' :halign 'center' :text TEMP)
+  )
+  (box :orientation 'v' :halign 'center' :space-evenly false :vexpand false :hexpand true
+   (label :class 'weather_stat' :text STAT)
+   (label :class 'weather_quote' :text QUOTE)
+   (label :class 'weather_quote' :text QUOTE2)
+  )
+ )
+)
+

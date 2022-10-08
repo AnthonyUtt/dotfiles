@@ -21,7 +21,17 @@ call plug#begin("~/.vim/plugged")
 
 	" Intellisense / Syntax Highlighting
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-cmake', 'coc-pyright', 'coc-solargraph']
+	let g:coc_global_extensions = [
+        \ 'coc-emmet',
+        \ 'coc-css',
+        \ 'coc-html',
+        \ 'coc-json',
+        \ 'coc-prettier',
+        \ 'coc-tsserver',
+        \ 'coc-cmake',
+        \ 'coc-pyright',
+        \ 'coc-solargraph'
+        \ ]
 
 	" Misc
 	Plug 'preservim/nerdcommenter'
@@ -53,8 +63,15 @@ call plug#begin("~/.vim/plugged")
     Plug 'bfrg/vim-cpp-modern'
     Plug 'jackguo380/vim-lsp-cxx-highlight'
 
+    " Rust
+    Plug 'rust-lang/rust.vim'
+
     " Godot
     Plug 'habamax/vim-godot'
+
+    " Yuck (eww DSL)
+    Plug 'elkowars/yuck.vim'
+    Plug 'gpanders/nvim-parinfer'
 call plug#end()
 
 " Config section
@@ -64,10 +81,10 @@ set ignorecase              " case insensitive
 set mouse=v                 " middle-click paste with 
 set hlsearch                " highlight search 
 set incsearch               " incremental search
-set tabstop=4               " number of columns occupied by a tab 
-set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
+set tabstop=2               " number of columns occupied by a tab 
+set softtabstop=2           " see multiple spaces as tabstops so <BS> does the right thing
 set expandtab               " converts tabs to white space
-set shiftwidth=4            " width for autoindents
+set shiftwidth=2            " width for autoindents
 set autoindent              " indent a new line the same amount as the line just typed
 set number                  " add line numbers
 set nowrap                  " Disable line wrapping
@@ -81,7 +98,7 @@ filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
 set spell                 " enable spell check (may need to download language package)
-" set noswapfile            " disable creating swap file
+set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
 set ruler                   " enable line and column display
 
@@ -122,8 +139,8 @@ set notermguicolors
 syntax enable
 set background=dark
 colorscheme gruvbox
-hi Normal guibg=NONE ctermbg=NONE
-hi NormalNC guibg=NONE ctermbg=NONE
+" h Normal guibg=NONE ctermbg=NONE
+" hi NormalNC guibg=NONE ctermbg=NONE
 
 " Fixes lag when exiting insert/visual mode
 if !has('gui_running')

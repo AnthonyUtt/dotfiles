@@ -19,6 +19,11 @@
           "lsRanges": true
         }
       }
+    },
+    "rust": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"]
     }
   },
   "solargraph.useBundler": false

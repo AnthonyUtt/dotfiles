@@ -1,0 +1,13 @@
+#!/bin/bash
+
+volume=`pactl get-sink-volume @DEFAULT_SINK@ | head -n1 | awk '{print $5}' | sed 's/\%//g'`
+mute=`pactl get-sink-mute @DEFAULT_SINK@ | grep Mute | head -n1 | awk '{print $2}'`
+
+
+if [[ "$1" == "value" ]]; then
+    echo "$volume"
+elif [[ "$1" == "muted" ]]; then
+    echo "$mute"
+else
+    echo "{\"volume\":$volume,\"mute\":\"$mute\"}"
+fi
