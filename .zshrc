@@ -169,7 +169,7 @@ eval "$(rbenv init - zsh)"
 export PATH=$PATH:/usr/local/go/bin
 
 # Rust
-#source $HOME/.cargo/env
+source $HOME/.cargo/env
 
 # Nix
 export PATH="$HOME/.nix-profile/bin:$PATH"
@@ -199,6 +199,7 @@ alias ls='exa'
 alias ll='exa -al'
 alias top='btop'
 alias mux='tmuxinator'
+alias hx='helix'
 
 # i3 layouts
 alias start-main="/home/anthony/.i3/scripts/work-layout main"
