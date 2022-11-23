@@ -119,8 +119,23 @@ bindkey '^[OB' history-substring-search-down
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Add NVM functionality
-source /usr/share/nvm/init-nvm.sh
+# Alias functions
+dc() {
+  if [ -z "$1" ]; then
+    docker compose
+  else
+    if [ "$1" = "full" ]; then
+      shift
+      docker compose -f docker-compose.yml -f docker-compose-ngrok.yml $@
+    else
+      docker compose $@
+    fi
+  fi
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Auto-load node version from .nvmrc files
 autoload -U add-zsh-hook
@@ -171,9 +186,6 @@ export PATH=$PATH:/usr/local/go/bin
 # Rust
 source $HOME/.cargo/env
 
-# Nix
-export PATH="$HOME/.nix-profile/bin:$PATH"
-
 # Editor env assignments
 export EDITOR=nvim
 export VISUAL=nvim
@@ -184,7 +196,6 @@ alias opo-check="(){ curl -X POST -F 'target="$1"' https://naughty-knuth-c2f221.
 alias package-cleanup="sudo apt autoremove"
 #alias colorpicker="$HOME/source/apps/colorpicker/colorpicker --short --one-shot --preview | xsel -b"
 alias log-out="i3-msg exit"
-alias dc="docker-compose"
 alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
 alias start-osx='docker run -it --device /dev/kvm -e "DISPLAY=${DISPLAY:-:0.0}" -v /tmp/.X11-unix:/tmp/.X11-unix -p 50922:10022 -e NOPICKER=true -e GENERATE_SPECIFIC=true -e DEVICE_MODEL="iMacPro1,1" -e SERIAL="C02Y20MDHX87" -e BOARD_SERIAL="C029014014NJG368C" -e UUID="95026928-D09C-43AB-AD8D-FD4728AF9B11" -e MAC_ADDRESS="50:F4:EB:DE:FC:B1" -v "/home/anthony/.docker-osx/mac_hdd_ng.img:/image" sickcodes/docker-osx:naked'
@@ -200,8 +211,10 @@ alias ll='exa -al'
 alias top='btop'
 alias mux='tmuxinator'
 alias hx='helix'
+alias sdf='ssh -t rufus@tty.sdf.org'
 
 # i3 layouts
 alias start-main="/home/anthony/.i3/scripts/work-layout main"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

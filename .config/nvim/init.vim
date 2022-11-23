@@ -34,6 +34,8 @@ call plug#begin("~/.vim/plugged")
         \ ]
 
 	" Misc
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'puremourning/vimspector'
 	Plug 'preservim/nerdcommenter'
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'romgrk/barbar.nvim'
@@ -55,7 +57,6 @@ call plug#begin("~/.vim/plugged")
 
     " Ruby
     Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'vinibispo/ruby.nvim'
     Plug 'tpope/vim-rails'
 
@@ -81,10 +82,10 @@ set ignorecase              " case insensitive
 set mouse=v                 " middle-click paste with 
 set hlsearch                " highlight search 
 set incsearch               " incremental search
-set tabstop=2               " number of columns occupied by a tab 
-set softtabstop=2           " see multiple spaces as tabstops so <BS> does the right thing
+set tabstop=4               " number of columns occupied by a tab 
+set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
 set expandtab               " converts tabs to white space
-set shiftwidth=2            " width for autoindents
+set shiftwidth=4            " width for autoindents
 set autoindent              " indent a new line the same amount as the line just typed
 set number                  " add line numbers
 set nowrap                  " Disable line wrapping
@@ -139,8 +140,8 @@ set notermguicolors
 syntax enable
 set background=dark
 colorscheme gruvbox
-" h Normal guibg=NONE ctermbg=NONE
-" hi NormalNC guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
+hi NormalNC guibg=NONE ctermbg=NONE
 
 " Fixes lag when exiting insert/visual mode
 if !has('gui_running')
@@ -228,10 +229,10 @@ nnoremap <silent> <leader>bv :vnew<CR>
 
 " Tab completion
 inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
+    \ coc#pum#visible() ? coc#pum#next(1) :
     \ CheckBackspace() ? "\<TAB>" :
     \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -329,9 +330,43 @@ let g:closetag_regions = {
     \ 'javascriptreact': 'jsxRegion',
     \ }
 
+" vimspector
+let g:vimspector_sidebar_width = 85
+let g:vimspector_bottombar_height = 15
+let g:vimspector_terminal_maxwidth = 70
+
+nnoremap <F5> :call vimspector#Launch()<cr>
+nnoremap <F8> :call vimspector#Reset()<cr>
+nnoremap <F10> :call vimspector#StepInto()<cr>")
+nnoremap <F11> :call vimspector#StepOver()<cr>")
+nnoremap <F12> :call vimspector#StepOut()<cr>")
+nnoremap <silent> <leader>db :call vimspector#ToggleBreakpoint()<cr>")
+
 " Lua-based plugin setup
 " nvim-scrollbar
 lua require("scrollbar").setup()
 
 " pears.nvim
 lua require("pears").setup()
+
+" nvim-treesitter
+lua << EOF
+require("nvim-treesitter.configs").setup {
+  ensure_installed = { "rust", "toml", "bash", "glsl", "html", "json", "python", "ruby", "tsx", "vim", "yaml" },
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting=false,
+    },
+  ident = { enable = true },
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = nil,
+    }
+  }
+EOF
+
+" set folding using treesitter
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
