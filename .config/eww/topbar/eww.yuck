@@ -1,0 +1,206 @@
+;; Bar ========================================================================
+;; Bar "window"
+(defwindow topbar
+    :geometry (geometry :x "0"
+                        :y "0"
+                        :height "50px"
+                        :width "100%"
+                        :anchor "top left")
+    :stacking "fg"
+    :wm-ignore false
+    :windowtype "dock"
+    (_bar))
+
+;; Bar Layout
+(defwidget _bar []
+   (box :class 'bar__container' :vexpand false :hexpand true
+    (box :class 'bar__main' :orientation 'h' :vexpand false :hexpand true
+     (_bar_left)
+     (_bar_right)
+    )
+   )
+)
+
+;; Sections
+
+(defwidget _bar_left []
+ (box :class 'bar__top' :orientation 'h' :vexpand false :hexpand false :halign 'start' :space-evenly false
+  (_launcher)
+  (_workspaces)
+ )
+)
+
+(defwidget _bar_right []
+ (box :class 'bar__bottom' :orientation 'h' :vexpand false :hexpand false :halign 'end' :space-evenly false
+  (_clock)
+  (_network)
+  (_volume)
+  (_battery)
+  (_power)
+ )
+)
+
+;; Widgets ====================================================================
+
+;; Dashboard Launcher
+(defwidget _launcher []
+ (box :class 'launcher' :orientation 'h' :space-evenly false
+  (button :class 'icon-launcher' :tooltip 'Launch Dashboard' :onclick "scripts/launcher" "")
+ )
+)
+
+;; Workspaces
+(defwidget _workspaces []
+ (eventbox :onhover '${EWW_CMD} update WORKSPACES=true'
+           :onhoverlost '${EWW_CMD} update WORKSPACES=false'
+  (box :class 'workspaces ${WORKSPACES ? 'active' : ''}' :orientation 'h' :space-evenly false :spacing 5
+   (for workspace in workspaces
+    (button :class 'btn-workspace ${workspace.focused ? 'focused' : workspace.urgent ? 'urgent' : ''}'
+            :onclick 'i3-msg workspace ${workspace.name}'
+            :tooltip '${workspace.pretty}'
+            '${workspace.symbol}'
+    )
+   )
+  )
+ )
+)
+(deflisten workspaces "scripts/workspaces")
+(defvar WORKSPACES false)
+
+;; Network
+(defwidget _network []
+ (eventbox :onhover "${EWW_CMD} update NETWORK=true"
+           :onhoverlost "${EWW_CMD} update NETWORK=false"
+  (box :class 'network ${NETWORK ? 'active' : ''}' :tooltip 'Network Info' :orientation 'h' :space-evenly false
+   (label :class 'icon-network' :text '直')
+   (revealer :reveal NETWORK
+             :transition 'slideleft'
+             :duration '250ms'
+    (box :class 'network-stats' :orientation 'h' :space-evenly false
+     (box :class 'network-stats__down' :orientation 'h'
+      (label :class 'icon-stats__down' :text '')
+      (label :class 'stats__down' :text '${network.down}')
+     )
+     (box :class 'network-stats__up' :orientation 'h'
+      (label :class 'icon-stats__up' :text '')
+      (label :class 'stats__up' :text '${network.up}')
+     )
+    )
+   )
+  )
+ )
+)
+(defvar NETWORK false)
+(defpoll network :interval '1s'
+ :initial `scripts/network`
+ `scripts/network`)
+
+;; Volume
+(defwidget _volume []
+ (eventbox :onhover "${EWW_CMD} update VOLUME=true"
+           :onhoverlost "${EWW_CMD} update VOLUME=false"
+  (box :class 'volume ${VOLUME ? 'active' : ''}' :tooltip 'Volume Controls' :orientation 'h' :space-evenly false
+   (button :class 'icon-volume'
+           :onclick 'pactl set-sink-mute @DEFAULT_SINK@ ${muted == "no" ? "yes" : "no"}'
+           {muted == 'no' ? '墳' : 'ﱝ'})
+   (revealer :reveal VOLUME
+             :transition 'slideleft'
+             :duration '250ms'
+    (box :class 'volume__bar ${volume > 50 ? 'green' : volume > 25 ? 'yellow' : 'red'}' 
+         :orientation 'h' :space-evenly false
+     (scale :value {muted == 'no' ? volume : 0}
+            :min 0 :max 101 :flipped false :orientation 'h'
+            :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
+    )
+   )
+  )
+ )
+)
+(defvar VOLUME false)
+(defpoll volume :interval '1s'
+ :initial `scripts/volume value`
+ `scripts/volume value`)
+(defpoll muted :interval '1s'
+ :initial `scripts/volume muted`
+ `scripts/volume muted`)
+
+;; Clock
+(defwidget _clock []
+ (eventbox :onclick '${EWW_CMD} update SHOW_DATE=${!SHOW_DATE}'
+           :onhover '${EWW_CMD} update CLOCK=true'
+           :onhoverlost '${EWW_CMD} update CLOCK=false'
+  (literal :content {SHOW_DATE ? _clock_date_var : _clock_time_var})
+ )
+)
+(defvar CLOCK false)
+(defvar SHOW_DATE false)
+(defpoll systime :interval '5s'
+ :initial `date +'{"hour":"%H","min":"%M"}'`
+ `date +'{"hour":"%H","min":"%M","month":"%b","day":"%d","year":"%Y"}'`)
+
+(defwidget _clock_time []
+ (box :class 'clock time ${CLOCK ? 'active' : ''}' :orientation 'h' :space-evenly false
+  (label :class 'icon-clock' :text '')
+  (box :orientation 'h'
+   (label :class 'hour' :text '${systime.hour}:${systime.min}')
+  )
+ )
+)
+(defvar _clock_time_var "(_clock_time)")
+
+(defwidget _clock_date []
+ (box :class 'clock date ${CLOCK ? 'active' : ''}' :orientation 'h' :space-evenly false
+  (label :class 'icon-clock' :text '')
+  (box :orientation 'h' :space-evenly false
+   (label :class 'date__text' :text '${systime.day} ${systime.month} ${systime.year}')
+  )
+ )
+)
+(defvar _clock_date_var "(_clock_date)")
+
+;; Battery
+(defwidget _battery []
+ (box :class 'battery ${CHARGE < 10 ? 'critical' : CHARGE < 20 ? 'warning' : ''}' :space-evenly false
+  :tooltip 'Charge: ${CHARGE}%${ADAPTER > 0 ? ' | Charging' : ''}'
+  (label :class 'icon-battery'
+   :text '${CHARGE < 20 ? '' : CHARGE < 40 ? '' : CHARGE < 75 ? '' : ''}'
+  )
+  (label :class 'icon-adapter ${ADAPTER > 0 ? 'connected' : ''}' :text 'ﮣ')
+ )
+)
+(defpoll CHARGE :interval '5s' `scripts/battery charge`)
+(defpoll ADAPTER :interval '5s' `scripts/battery ac`)
+
+;; Power Menu
+(defwidget _power []
+ (eventbox :onhover '${EWW_CMD} update POWER=true'
+           :onhoverlost '${EWW_CMD} update POWER=false'
+  (box :class 'power ${POWER ? 'active' : ''}' :orientation 'h' :space-evenly false
+   (revealer :reveal POWER
+             :transition 'slideleft'
+             :duration '150ms'
+    (box :orientation 'h' :space-evenly false
+     (button :class 'btn-logout' :tooltip 'Log Out' :onclick 'scripts/power logout' '')
+     (button :class 'btn-reboot' :tooltip 'Reboot' :onclick 'scripts/power reboot' '')
+    )
+   )
+   (button :class 'btn-shutdown' :tooltip 'Shut Down' :onclick 'scripts/power shutdown' '')
+  )
+ )
+)
+(defvar POWER false)
+
+;; Events =====================================================================
+
+;; Hover Event
+(defwidget _hover_reveal []
+ (eventbox :onhover "${EWW_CMD} update SHOW_BAR=true"
+          :onhoverlost "${EWW_CMD} update SHOW_BAR=false"
+  (revealer :transition "crossfade"
+            :reveal SHOW_BAR
+            :duration "300ms"
+   (children)
+  )
+ )
+)
+(defvar SHOW_BAR false)

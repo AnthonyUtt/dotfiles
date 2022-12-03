@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec rofi -modi drun,run -show drun

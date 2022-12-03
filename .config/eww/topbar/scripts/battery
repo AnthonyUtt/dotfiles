@@ -1,0 +1,12 @@
+#!/bin/bash
+
+battery=`/bin/cat /sys/class/power_supply/BAT0/capacity`
+adapter=`/bin/cat /sys/class/power_supply/AC/online`
+
+if [[ "$1" == "charge" ]]; then
+    echo "$battery"
+elif [[ "$1" == "ac" ]]; then
+    echo "$adapter"
+else
+    echo "{\"battery\":$battery,\"ac\":\"$adapter\"}"
+fi

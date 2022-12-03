@@ -1,0 +1,40 @@
+#!/bin/bash
+
+IFNAME=wlan0
+NETSTAT="/sys/class/net/$IFNAME/statistics"
+BYTES_RX="$NETSTAT/rx_bytes"
+BYTES_TX="$NETSTAT/tx_bytes"
+
+CACHE="$HOME/.cache/eww/network"
+CACHE_UP="$CACHE/bytes_up"
+CACHE_DOWN="$CACHE/bytes_down"
+
+## Create cache dir if it doesn't exist
+if [[ ! -d "$CACHE" ]]; then
+    mkdir -p ${CACHE}
+fi
+
+get_network_data() {
+    prev_bytes_up=`/bin/cat $CACHE_UP`
+    prev_bytes_down=`/bin/cat $CACHE_DOWN`
+
+    bytes_up=`/bin/cat $BYTES_TX`
+    bytes_down=`/bin/cat $BYTES_RX`
+
+    up_diff="$(($bytes_up - $prev_bytes_up))"
+    down_diff="$(($bytes_down - $prev_bytes_down))"
+
+    up_diff_bits="$(($up_diff * 8))"
+    down_diff_bits="$(($down_diff * 8))"
+
+    formatted_up=`numfmt --suffix "b/s" --to iec --format "%3.0f" $up_diff_bits`
+    formatted_down=`numfmt --suffix "b/s" --to iec --format "%3.0f" $down_diff_bits`
+
+    ## Overwrite previous speed data
+    echo "$bytes_up" > ${CACHE_UP}
+    echo "$bytes_down" > ${CACHE_DOWN}
+}
+
+get_network_data
+
+echo "{\"up\":\"$formatted_up\",\"down\":\"$formatted_down\"}"

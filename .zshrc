@@ -119,18 +119,18 @@ bindkey '^[OB' history-substring-search-down
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Alias functions
+# Alias Functions
 dc() {
-  if [ -z "$1" ]; then
-    docker compose
-  else
-    if [ "$1" = "full" ]; then
-      shift
-      docker compose -f docker-compose.yml -f docker-compose-ngrok.yml $@
+    if [ -z "$1" ]; then
+        docker compose
     else
-      docker compose $@
+        if [ "$1" = "full" ]; then
+            shift
+            docker compose -f docker-compose.yml -f docker-compose-ngrok.yml $@
+        else
+            docker compose $@
+        fi
     fi
-  fi
 }
 
 export NVM_DIR="$HOME/.nvm"

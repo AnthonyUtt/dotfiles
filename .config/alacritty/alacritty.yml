@@ -89,8 +89,8 @@ colors: *gruvbox-dark
 window:
   opacity: 0.75
   dimensions:
-    columns: 136
-    lines: 40
+    columns: 78
+    lines: 28
 
 font:
   normal:
@@ -106,7 +106,7 @@ font:
     family: MesloLGS NF
     style: Bold Italic
 
-  size: 11
+  size: 9
 
 key_bindings:
   - { key: Key0, mods: Control, action: ResetFontSize }

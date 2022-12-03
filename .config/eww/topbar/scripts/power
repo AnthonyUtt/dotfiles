@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ "$1" == "shutdown" ]]; then
+    doas poweroff
+elif [[ "$1" == "reboot" ]]; then
+    doas reboot
+elif [[ "$1" == "logout" ]]; then
+    loginctl kill-session self
+fi

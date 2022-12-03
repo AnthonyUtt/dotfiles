@@ -1,0 +1,5 @@
+#!/bin/bash
+
+EWW_CMD="$(which eww) -c $HOME/.config/eww/topbar/"
+
+sh -c "$EWW_CMD $1 topbar"
