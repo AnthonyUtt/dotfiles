@@ -53,7 +53,7 @@ bindsym Print exec --no-startup-id flameshot gui
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id st -c "float_term"
+bindsym $mod+Return exec --no-startup-id alacritty --class float_term
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -100,7 +100,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking
 # bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -161,6 +161,7 @@ bindsym $mod+tab exec --no-startup-id $HOME/.config/i3/i3-tree-switcher
 bindsym $mod+Shift+w exec --no-startup-id $HOME/.config/i3/i3-window-move
 bindsym $mod+n exec --no-startup-id $HOME/.config/i3/i3-new-workspace
 bindsym $mod+Shift+n exec --no-startup-id $HOME/.config/i3/i3-rename
+bindsym $mod+t exec --no-startup-id $HOME/.config/i3/i3-move-to-primary
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -229,6 +230,7 @@ for_window [class="^Live News"] floating enable
 for_window [class="bitwarden"] floating enable
 for_window [class="alkahest" instance="alkahest"] floating enable
 for_window [class="DBeaver"] floating enable
+for_window [class="Spacefm"] floating enable
 
 # i3-fzfify: Using multiple window titles for polybar title display
 for_window [title="Set Window Mark"] floating enable
@@ -264,16 +266,16 @@ exec --no-startup-id $HOME/.config/eww/launch_top_bar open
 exec --no-startup-id gentoo-pipewire-launcher
 
 # Launch Albert
-# exec --no-startup-id albert
+exec --no-startup-id albert
 
 # Launch Flameshot
-# exec --no-startup-id flameshot
+exec --no-startup-id flameshot
 
 # Set main workspace layout
-# exec --no-startup-id "i3-msg 'workspace main; append_layout /home/anthony/.config/i3/workspace-main.json'"
+exec --no-startup-id "i3-msg 'workspace main; append_layout /home/anthony/.config/i3/workspace-main.json'"
 
 # Call dex for app autostart
-# exec --no-startup-id dex -a
+exec --no-startup-id dex -a
 
 # i3-gaps setup
 gaps inner 15

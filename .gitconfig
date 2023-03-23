@@ -6,6 +6,6 @@
 [pull]
 	rebase = false
 [init]
-	defaultBranch = production
+	defaultBranch = main
 [commit]
 	template = /home/anthony/.gitcommitmsg

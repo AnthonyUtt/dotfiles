@@ -20,13 +20,10 @@
           "lsRanges": true
         }
       }
-    },
-    "rust": {
-      "command": "rust-analyzer",
-      "filetypes": ["rust"],
-      "rootPatterns": ["Cargo.toml"]
     }
   },
   "solargraph.useBundler": false,
-  "solargraph.commandPath": "/home/anthony/.rbenv/shims/solargraph"
+  "solargraph.commandPath": "/home/anthony/.rbenv/shims/solargraph",
+  "rust-analyzer.trace.server": "verbose",
+  "rust-analyzer.check.extraArgs": ["--target-dir","/home/anthony/.rust-analyzer"]
 }

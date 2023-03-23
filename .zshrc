@@ -1,9 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  # source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -189,6 +189,7 @@ source $HOME/.cargo/env
 # Editor env assignments
 export EDITOR=nvim
 export VISUAL=nvim
+export TERM=xterm-256color
 
 # Aliases
 alias opo-check="(){ curl -X POST -F 'target="$1"' https://naughty-knuth-c2f221.netlify.app/.netlify/functions/seo-data ;}"
@@ -212,9 +213,26 @@ alias top='btop'
 alias mux='tmuxinator'
 alias hx='helix'
 alias sdf='ssh -t rufus@tty.sdf.org'
+alias pt='porsmo'
+alias speedtest='speedtest-rs'
 
 # i3 layouts
 alias start-main="/home/anthony/.i3/scripts/work-layout main"
 
+# Source FZF if it exists
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Start a zellij session if it hasn't been started yet
+export ZELLIJ_AUTO_ATTACH=true
+if [[ -z "$ZELLIJ" ]]; then
+    if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+        zellij attach -c
+    else
+        zellij
+    fi
+
+    if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+        exit
+    fi
+fi
 

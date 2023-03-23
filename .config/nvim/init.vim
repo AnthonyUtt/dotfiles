@@ -3,21 +3,21 @@ call plug#begin("~/.vim/plugged")
 	
 	" Theme
 	Plug 'dracula/vim'
-    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-    Plug 'ellisonleao/gruvbox.nvim'
+  Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+  Plug 'ellisonleao/gruvbox.nvim'
 
-    " Tmux+Vim
-    Plug 'christoomey/vim-tmux-navigator'
+  " Tmux+Vim
+  Plug 'christoomey/vim-tmux-navigator'
 	
 	" File Explorer
 	Plug 'scrooloose/nerdtree'
 	Plug 'ryanoasis/vim-devicons'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
 
 	" File Searching
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	Plug 'junegunn/fzf.vim'
-    Plug 'wookayin/fzf-ripgrep.vim'
+  Plug 'wookayin/fzf-ripgrep.vim'
 
 	" Intellisense / Syntax Highlighting
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -30,49 +30,56 @@ call plug#begin("~/.vim/plugged")
         \ 'coc-tsserver',
         \ 'coc-cmake',
         \ 'coc-pyright',
-        \ 'coc-solargraph'
+        \ 'coc-solargraph',
+        \ 'coc-rust-analyzer'
         \ ]
 
 	" Misc
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'puremourning/vimspector'
-	Plug 'preservim/nerdcommenter'
-    Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'romgrk/barbar.nvim'
-    Plug 'beauwilliams/statusline.lua'
-    Plug 'tveskag/nvim-blame-line'
-    Plug 'petertriho/nvim-scrollbar'
-    Plug 'steelsojka/pears.nvim'
-    Plug 'liuchengxu/vista.vim'
-    Plug 'farmergreg/vim-lastplace'
-    Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-surround'
-    Plug 'alvan/vim-closetag'
-    Plug 'lambdalisue/suda.vim'
+  Plug 'preservim/nerdcommenter'
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'romgrk/barbar.nvim'
+  Plug 'beauwilliams/statusline.lua'
+  Plug 'tveskag/nvim-blame-line'
+  Plug 'petertriho/nvim-scrollbar'
+  Plug 'steelsojka/pears.nvim'
+  Plug 'liuchengxu/vista.vim'
+  Plug 'farmergreg/vim-lastplace'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-surround'
+  Plug 'alvan/vim-closetag'
+  Plug 'lambdalisue/suda.vim'
+  Plug 'github/copilot.vim'
+  Plug 'Exafunction/codeium.vim'
+  Plug 'kamykn/spelunker.vim'
 
-    " React/JS/TS Support
-    Plug 'pangloss/vim-javascript'
-    Plug 'leafgarland/typescript-vim'
-    Plug 'peitalin/vim-jsx-typescript'
+  " React/JS/TS Support
+  Plug 'pangloss/vim-javascript'
+  Plug 'leafgarland/typescript-vim'
+  Plug 'peitalin/vim-jsx-typescript'
 
-    " Ruby
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'vinibispo/ruby.nvim'
-    Plug 'tpope/vim-rails'
+  " Ruby
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'vinibispo/ruby.nvim'
+  Plug 'tpope/vim-rails'
 
-    " C++
-    Plug 'bfrg/vim-cpp-modern'
-    Plug 'jackguo380/vim-lsp-cxx-highlight'
+  " C++
+  Plug 'bfrg/vim-cpp-modern'
+  Plug 'jackguo380/vim-lsp-cxx-highlight'
 
-    " Rust
-    Plug 'rust-lang/rust.vim'
+  " Rust
+  Plug 'rust-lang/rust.vim'
 
-    " Godot
-    Plug 'habamax/vim-godot'
+  " Godot
+  Plug 'habamax/vim-godot'
 
-    " Yuck (eww DSL)
-    Plug 'elkowars/yuck.vim'
-    Plug 'gpanders/nvim-parinfer'
+  " Yuck (eww DSL)
+  Plug 'elkowars/yuck.vim'
+  Plug 'gpanders/nvim-parinfer'
+
+  " OpenGL
+  Plug 'tikhomirov/vim-glsl'
 call plug#end()
 
 " Config section
@@ -82,10 +89,10 @@ set ignorecase              " case insensitive
 set mouse=v                 " middle-click paste with 
 set hlsearch                " highlight search 
 set incsearch               " incremental search
-set tabstop=4               " number of columns occupied by a tab 
-set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
+set tabstop=2               " number of columns occupied by a tab 
+set softtabstop=2           " see multiple spaces as tabstops so <BS> does the right thing
 set expandtab               " converts tabs to white space
-set shiftwidth=4            " width for autoindents
+set shiftwidth=2            " width for autoindents
 set autoindent              " indent a new line the same amount as the line just typed
 set number                  " add line numbers
 set nowrap                  " Disable line wrapping
@@ -98,7 +105,7 @@ set clipboard=unnamedplus   " using system clipboard
 filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
-set spell                 " enable spell check (may need to download language package)
+set nospell                 " enable spell check (may need to download language package)
 set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
 set ruler                   " enable line and column display
@@ -139,18 +146,18 @@ endif
 set notermguicolors
 syntax enable
 set background=dark
-colorscheme gruvbox
-hi Normal guibg=NONE ctermbg=NONE
-hi NormalNC guibg=NONE ctermbg=NONE
+colorscheme dracula
+" hi Normal guibg=NONE ctermbg=NONE
+" hi NormalNC guibg=NONE ctermbg=NONE
 
 " Fixes lag when exiting insert/visual mode
 if !has('gui_running')
-    set ttimeoutlen=10
-    augroup FastEscape
-        autocmd!
-        autocmd InsertEnter * set timeoutlen=0
-        autocmd InsertLeave * set timeoutlen=1000
-    augroup end
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    autocmd InsertEnter * set timeoutlen=0
+    autocmd InsertLeave * set timeoutlen=1000
+  augroup end
 endif
 
 " NerdComment
@@ -180,10 +187,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 nnoremap <silent> <C-b> :call NERDTreeToggleAndRefresh()<CR>
 
 function NERDTreeToggleAndRefresh()
-    :NERDTreeToggle
-    if g:NERDTree.IsOpen()
-        :NERDTreeRefreshRoot
-    endif
+  :NERDTreeToggle
+  if g:NERDTree.IsOpen()
+    :NERDTreeRefreshRoot
+  endif
 endfunction
 
 " Set NERDTreeGit nerd fonts
@@ -310,11 +317,11 @@ let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
 " CppMan setup
 function! s:JbzCppMan()
-    let old_isk = &iskeyword
-    setl iskeyword+=:
-    let str = expand("<cword>")
-    let &l:iskeyword = old_isk
-    execute 'Man ' . str
+  let old_isk = &iskeyword
+  setl iskeyword+=:
+  let str = expand("<cword>")
+  let &l:iskeyword = old_isk
+  execute 'Man ' . str
 endfunction
 command! JbzCppMan :call s:JbzCppMan()
 
@@ -338,8 +345,8 @@ autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 " React stuff
 " Enable code folding
 augroup javascript_folding
-    au!
-    au FileType javascript setlocal foldmethod=syntax
+  au!
+  au FileType javascript setlocal foldmethod=syntax
 augroup END
 
 " Set file types for vim-jsx-typescript
@@ -372,30 +379,51 @@ nnoremap <F11> :call vimspector#StepOver()<cr>")
 nnoremap <F12> :call vimspector#StepOut()<cr>")
 nnoremap <silent> <leader>db :call vimspector#ToggleBreakpoint()<cr>")
 
+" GH Copilot Setup
+imap <silent><script><expr> <C-v> copilot#Accept("")
+imap <silent><script><expr> <C-d> copilot#Dismiss()
+imap <silent><script><expr> <M-<> copilot#Previous()
+imap <silent><script><expr> <M->> copilot#Next()
+imap <silent><script><expr> <M-/> copilot#Suggest()
+let g:copilot_no_tab_map = v:true
+
+" Codeium setup
+" imap <silent><script><expr><nowait> <C-v> codeium#Accept()
+" imap <C-d> <Plug>(codeium-dismiss)
+" imap <M-<> <Plug>(codeium-previous)
+" imap <M->> <Plug>(codeium-next)
+let g:codeium_disable_bindings = 1
+let g:codeium_enabled = v:false
+
 " Lua-based plugin setup
 " nvim-scrollbar
 lua require("scrollbar").setup()
 
 " pears.nvim
-lua require("pears").setup()
+" lua require("pears").setup()
+lua << EOF
+require("pears").setup(function(conf)
+  conf.pair("'", { filetypes = {exclude = {"rust"}}})
+end)
+EOF
 
 " nvim-treesitter
-lua << EOF
-require("nvim-treesitter.configs").setup {
-  ensure_installed = { "rust", "toml", "bash", "glsl", "html", "json", "python", "ruby", "tsx", "vim", "yaml" },
-  auto_install = true,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting=false,
-    },
-  ident = { enable = true },
-  rainbow = {
-    enable = true,
-    extended_mode = true,
-    max_file_lines = nil,
-    }
-  }
-EOF
+" lua << EOF
+" require("nvim-treesitter.configs").setup {
+  " ensure_installed = { "rust", "toml", "bash", "glsl", "html", "json", "python", "ruby", "tsx", "vim", "yaml" },
+  " auto_install = true,
+  " highlight = {
+    " enable = true,
+    " additional_vim_regex_highlighting=false,
+    " },
+  " ident = { enable = true },
+  " rainbow = {
+    " enable = true,
+    " extended_mode = true,
+    " max_file_lines = nil,
+    " }
+  " }
+" EOF
 
 " set folding using treesitter
 " set foldmethod=expr

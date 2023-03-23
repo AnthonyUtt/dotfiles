@@ -1,5 +1,5 @@
 #!/bin/bash
 
-feh --bg-scale $HOME/.bg.png
+feh --bg-scale $HOME/.bg.jpg
 
-eww daemon
+/home/anthony/.config/eww/launch_bar open
