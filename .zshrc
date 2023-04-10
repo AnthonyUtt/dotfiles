@@ -173,13 +173,6 @@ export PATH="$(python3 -m site --user-base)/bin:$PATH"
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
 #export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-# Gems
-export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
-
-# Rbenv init
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init - zsh)"
-
 # Go Path Addition
 export PATH=$PATH:/usr/local/go/bin
 
